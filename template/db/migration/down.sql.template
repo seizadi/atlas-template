@@ -1,0 +1,4 @@
+
+DROP TRIGGER {{(index . 0).NameSnakes}}_updated_at on {{(index . 0).NameSnakes}};
+
+DROP TABLE {{(index . 0).NameSnakes}};
