@@ -4,16 +4,6 @@ import (
 	"github.com/seizadi/cmdb/pkg/pb"
 )
 
-
-type manifestsServer struct {
-	*pb.ManifestsDefaultServer
-}
-// NewManifestsServer returns an instance of the default Manifest server interface
-func NewManifestsServer() (pb.ManifestsServer, error) {
-	return &manifestsServer{&pb.ManifestsDefaultServer{}}, nil
-}
-
-
 type artifactsServer struct {
 	*pb.ArtifactsDefaultServer
 }
@@ -21,43 +11,6 @@ type artifactsServer struct {
 func NewArtifactsServer() (pb.ArtifactsServer, error) {
 	return &artifactsServer{&pb.ArtifactsDefaultServer{}}, nil
 }
-
-
-type awsRdsInstancesServer struct {
-	*pb.AwsRdsInstancesDefaultServer
-}
-// NewAwsRdsInstancesServer returns an instance of the default AwsRdsInstance server interface
-func NewAwsRdsInstancesServer() (pb.AwsRdsInstancesServer, error) {
-	return &awsRdsInstancesServer{&pb.AwsRdsInstancesDefaultServer{}}, nil
-}
-
-
-type containersServer struct {
-	*pb.ContainersDefaultServer
-}
-// NewContainersServer returns an instance of the default Container server interface
-func NewContainersServer() (pb.ContainersServer, error) {
-	return &containersServer{&pb.ContainersDefaultServer{}}, nil
-}
-
-
-type environmentsServer struct {
-	*pb.EnvironmentsDefaultServer
-}
-// NewEnvironmentsServer returns an instance of the default Environment server interface
-func NewEnvironmentsServer() (pb.EnvironmentsServer, error) {
-	return &environmentsServer{&pb.EnvironmentsDefaultServer{}}, nil
-}
-
-
-type kubeClustersServer struct {
-	*pb.KubeClustersDefaultServer
-}
-// NewKubeClustersServer returns an instance of the default KubeCluster server interface
-func NewKubeClustersServer() (pb.KubeClustersServer, error) {
-	return &kubeClustersServer{&pb.KubeClustersDefaultServer{}}, nil
-}
-
 
 type vaultsServer struct {
 	*pb.VaultsDefaultServer
@@ -67,7 +20,6 @@ func NewVaultsServer() (pb.VaultsServer, error) {
 	return &vaultsServer{&pb.VaultsDefaultServer{}}, nil
 }
 
-
 type versionTagsServer struct {
 	*pb.VersionTagsDefaultServer
 }
@@ -75,25 +27,6 @@ type versionTagsServer struct {
 func NewVersionTagsServer() (pb.VersionTagsServer, error) {
 	return &versionTagsServer{&pb.VersionTagsDefaultServer{}}, nil
 }
-
-
-type applicationsServer struct {
-	*pb.ApplicationsDefaultServer
-}
-// NewApplicationsServer returns an instance of the default Application server interface
-func NewApplicationsServer() (pb.ApplicationsServer, error) {
-	return &applicationsServer{&pb.ApplicationsDefaultServer{}}, nil
-}
-
-
-type awsServicesServer struct {
-	*pb.AwsServicesDefaultServer
-}
-// NewAwsServicesServer returns an instance of the default AwsService server interface
-func NewAwsServicesServer() (pb.AwsServicesServer, error) {
-	return &awsServicesServer{&pb.AwsServicesDefaultServer{}}, nil
-}
-
 
 type deploymentsServer struct {
 	*pb.DeploymentsDefaultServer
@@ -103,6 +36,61 @@ func NewDeploymentsServer() (pb.DeploymentsServer, error) {
 	return &deploymentsServer{&pb.DeploymentsDefaultServer{}}, nil
 }
 
+type environmentsServer struct {
+	*pb.EnvironmentsDefaultServer
+}
+// NewEnvironmentsServer returns an instance of the default Environment server interface
+func NewEnvironmentsServer() (pb.EnvironmentsServer, error) {
+	return &environmentsServer{&pb.EnvironmentsDefaultServer{}}, nil
+}
+
+type kubeClustersServer struct {
+	*pb.KubeClustersDefaultServer
+}
+// NewKubeClustersServer returns an instance of the default KubeCluster server interface
+func NewKubeClustersServer() (pb.KubeClustersServer, error) {
+	return &kubeClustersServer{&pb.KubeClustersDefaultServer{}}, nil
+}
+
+type manifestsServer struct {
+	*pb.ManifestsDefaultServer
+}
+// NewManifestsServer returns an instance of the default Manifest server interface
+func NewManifestsServer() (pb.ManifestsServer, error) {
+	return &manifestsServer{&pb.ManifestsDefaultServer{}}, nil
+}
+
+type applicationsServer struct {
+	*pb.ApplicationsDefaultServer
+}
+// NewApplicationsServer returns an instance of the default Application server interface
+func NewApplicationsServer() (pb.ApplicationsServer, error) {
+	return &applicationsServer{&pb.ApplicationsDefaultServer{}}, nil
+}
+
+type awsRdsInstancesServer struct {
+	*pb.AwsRdsInstancesDefaultServer
+}
+// NewAwsRdsInstancesServer returns an instance of the default AwsRdsInstance server interface
+func NewAwsRdsInstancesServer() (pb.AwsRdsInstancesServer, error) {
+	return &awsRdsInstancesServer{&pb.AwsRdsInstancesDefaultServer{}}, nil
+}
+
+type awsServicesServer struct {
+	*pb.AwsServicesDefaultServer
+}
+// NewAwsServicesServer returns an instance of the default AwsService server interface
+func NewAwsServicesServer() (pb.AwsServicesServer, error) {
+	return &awsServicesServer{&pb.AwsServicesDefaultServer{}}, nil
+}
+
+type containersServer struct {
+	*pb.ContainersDefaultServer
+}
+// NewContainersServer returns an instance of the default Container server interface
+func NewContainersServer() (pb.ContainersServer, error) {
+	return &containersServer{&pb.ContainersDefaultServer{}}, nil
+}
 
 type regionsServer struct {
 	*pb.RegionsDefaultServer
@@ -111,7 +99,6 @@ type regionsServer struct {
 func NewRegionsServer() (pb.RegionsServer, error) {
 	return &regionsServer{&pb.RegionsDefaultServer{}}, nil
 }
-
 
 type secretsServer struct {
 	*pb.SecretsDefaultServer

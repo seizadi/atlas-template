@@ -4,7 +4,6 @@ import (
 	"github.com/seizadi/cmdb/pkg/pb"
 )
 {{ range $r := . }}
-
 type {{$r.NameLowerCamels}}Server struct {
 	*pb.{{$r.NameCamels}}DefaultServer
 }

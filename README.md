@@ -34,7 +34,7 @@ resources:
 In subsequent releases we could look at a more complex golang model
 with associations and drive the generation from the model. See the
 model definitions in ./model/* and the following output of go-erd
-here [model ERD](https://github.com/seizadi/app-template/blob/master/doc/db/out.pdf)
+here [model ERD](https://github.com/seizadi/atlas-template/blob/master/doc/db/out.pdf)
 
 ## Build
 ```sh

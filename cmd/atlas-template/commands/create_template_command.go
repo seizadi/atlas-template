@@ -76,6 +76,14 @@ func createTemplate(c *cli.Context) {
 	}
 	
 	err = runTemplate(r,
+		"template/cmd/server/servers.go.template",
+		"resolved/cmd/server/servers.go" )
+	
+	if err != nil {
+		log.Fatalf("failed to create cmd/server/servers.go\n%s\n", err)
+	}
+	
+	err = runTemplate(r,
 		"template/cmd/server/endpoints.go.template",
 		"resolved/cmd/server/endpoints.go" )
 	
