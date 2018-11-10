@@ -56,6 +56,7 @@ the least.
 ```sh
 $ find resolved -type f -print
 resolved/cmd/server/endpoints.go
+resolved/cmd/server/servers.go
 resolved/db/migration/00002_artifacts.down.sql
 resolved/db/migration/00002_artifacts.up.sql
 resolved/db/migration/00002_manifests.down.sql
