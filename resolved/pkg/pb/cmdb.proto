@@ -79,6 +79,120 @@ service Cmdb {
 
 
 // ------------------------------------------------------
+// Manifest represents a particular AWS Region
+// ------------------------------------------------------
+message Manifest {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The Manifest identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the Manifest
+  string name = 2;
+
+  // The description of the Manifest
+  string description = 3;
+}
+
+message CreateManifestRequest {
+  Manifest payload = 1;
+}
+
+message CreateManifestResponse {
+  Manifest result = 1;
+}
+
+message ReadManifestRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadManifestResponse {
+  Manifest result = 1;
+}
+
+message UpdateManifestRequest {
+  Manifest payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateManifestResponse {
+  Manifest result = 1;
+}
+
+message DeleteManifestRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteManifestResponse {}
+
+message ListManifestRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListManifestsResponse {
+  repeated Manifest results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service Manifests {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a Manifest information.
+  rpc Create (CreateManifestRequest) returns (CreateManifestResponse) {
+    option (google.api.http) = {
+            post: "/manifests"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a Manifest information by identifier.
+  rpc Read (ReadManifestRequest) returns (ReadManifestResponse) {
+    option (google.api.http) = {
+            get: "/manifests/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a Manifest information.
+  rpc Update (UpdateManifestRequest) returns (UpdateManifestResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/manifests/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/manifests/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular Manifest.
+  rpc Delete (DeleteManifestRequest) returns (DeleteManifestResponse) {
+    option (google.api.http) = {
+            delete: "/manifests/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "Manifest";
+  }
+
+  // Use this method to retrieve all the Manifests.
+  rpc List (ListManifestRequest) returns (ListManifestsResponse) {
+    option (google.api.http) = {
+            get: "/manifests"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
 // Artifact represents a particular AWS Region
 // ------------------------------------------------------
 message Artifact {
@@ -301,690 +415,6 @@ service AwsRdsInstances {
   rpc List (ListAwsRdsInstanceRequest) returns (ListAwsRdsInstancesResponse) {
     option (google.api.http) = {
             get: "/aws_rds_instances"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// Deployment represents a particular AWS Region
-// ------------------------------------------------------
-message Deployment {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The Deployment identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the Deployment
-  string name = 2;
-
-  // The description of the Deployment
-  string description = 3;
-}
-
-message CreateDeploymentRequest {
-  Deployment payload = 1;
-}
-
-message CreateDeploymentResponse {
-  Deployment result = 1;
-}
-
-message ReadDeploymentRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadDeploymentResponse {
-  Deployment result = 1;
-}
-
-message UpdateDeploymentRequest {
-  Deployment payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateDeploymentResponse {
-  Deployment result = 1;
-}
-
-message DeleteDeploymentRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteDeploymentResponse {}
-
-message ListDeploymentRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListDeploymentsResponse {
-  repeated Deployment results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service Deployments {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a Deployment information.
-  rpc Create (CreateDeploymentRequest) returns (CreateDeploymentResponse) {
-    option (google.api.http) = {
-            post: "/deployments"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a Deployment information by identifier.
-  rpc Read (ReadDeploymentRequest) returns (ReadDeploymentResponse) {
-    option (google.api.http) = {
-            get: "/deployments/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a Deployment information.
-  rpc Update (UpdateDeploymentRequest) returns (UpdateDeploymentResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/deployments/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/deployments/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular Deployment.
-  rpc Delete (DeleteDeploymentRequest) returns (DeleteDeploymentResponse) {
-    option (google.api.http) = {
-            delete: "/deployments/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "Deployment";
-  }
-
-  // Use this method to retrieve all the Deployments.
-  rpc List (ListDeploymentRequest) returns (ListDeploymentsResponse) {
-    option (google.api.http) = {
-            get: "/deployments"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// Manifest represents a particular AWS Region
-// ------------------------------------------------------
-message Manifest {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The Manifest identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the Manifest
-  string name = 2;
-
-  // The description of the Manifest
-  string description = 3;
-}
-
-message CreateManifestRequest {
-  Manifest payload = 1;
-}
-
-message CreateManifestResponse {
-  Manifest result = 1;
-}
-
-message ReadManifestRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadManifestResponse {
-  Manifest result = 1;
-}
-
-message UpdateManifestRequest {
-  Manifest payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateManifestResponse {
-  Manifest result = 1;
-}
-
-message DeleteManifestRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteManifestResponse {}
-
-message ListManifestRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListManifestsResponse {
-  repeated Manifest results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service Manifests {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a Manifest information.
-  rpc Create (CreateManifestRequest) returns (CreateManifestResponse) {
-    option (google.api.http) = {
-            post: "/manifests"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a Manifest information by identifier.
-  rpc Read (ReadManifestRequest) returns (ReadManifestResponse) {
-    option (google.api.http) = {
-            get: "/manifests/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a Manifest information.
-  rpc Update (UpdateManifestRequest) returns (UpdateManifestResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/manifests/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/manifests/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular Manifest.
-  rpc Delete (DeleteManifestRequest) returns (DeleteManifestResponse) {
-    option (google.api.http) = {
-            delete: "/manifests/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "Manifest";
-  }
-
-  // Use this method to retrieve all the Manifests.
-  rpc List (ListManifestRequest) returns (ListManifestsResponse) {
-    option (google.api.http) = {
-            get: "/manifests"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// Secret represents a particular AWS Region
-// ------------------------------------------------------
-message Secret {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The Secret identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the Secret
-  string name = 2;
-
-  // The description of the Secret
-  string description = 3;
-}
-
-message CreateSecretRequest {
-  Secret payload = 1;
-}
-
-message CreateSecretResponse {
-  Secret result = 1;
-}
-
-message ReadSecretRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadSecretResponse {
-  Secret result = 1;
-}
-
-message UpdateSecretRequest {
-  Secret payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateSecretResponse {
-  Secret result = 1;
-}
-
-message DeleteSecretRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteSecretResponse {}
-
-message ListSecretRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListSecretsResponse {
-  repeated Secret results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service Secrets {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a Secret information.
-  rpc Create (CreateSecretRequest) returns (CreateSecretResponse) {
-    option (google.api.http) = {
-            post: "/secrets"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a Secret information by identifier.
-  rpc Read (ReadSecretRequest) returns (ReadSecretResponse) {
-    option (google.api.http) = {
-            get: "/secrets/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a Secret information.
-  rpc Update (UpdateSecretRequest) returns (UpdateSecretResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/secrets/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/secrets/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular Secret.
-  rpc Delete (DeleteSecretRequest) returns (DeleteSecretResponse) {
-    option (google.api.http) = {
-            delete: "/secrets/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "Secret";
-  }
-
-  // Use this method to retrieve all the Secrets.
-  rpc List (ListSecretRequest) returns (ListSecretsResponse) {
-    option (google.api.http) = {
-            get: "/secrets"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// Vault represents a particular AWS Region
-// ------------------------------------------------------
-message Vault {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The Vault identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the Vault
-  string name = 2;
-
-  // The description of the Vault
-  string description = 3;
-}
-
-message CreateVaultRequest {
-  Vault payload = 1;
-}
-
-message CreateVaultResponse {
-  Vault result = 1;
-}
-
-message ReadVaultRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadVaultResponse {
-  Vault result = 1;
-}
-
-message UpdateVaultRequest {
-  Vault payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateVaultResponse {
-  Vault result = 1;
-}
-
-message DeleteVaultRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteVaultResponse {}
-
-message ListVaultRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListVaultsResponse {
-  repeated Vault results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service Vaults {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a Vault information.
-  rpc Create (CreateVaultRequest) returns (CreateVaultResponse) {
-    option (google.api.http) = {
-            post: "/vaults"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a Vault information by identifier.
-  rpc Read (ReadVaultRequest) returns (ReadVaultResponse) {
-    option (google.api.http) = {
-            get: "/vaults/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a Vault information.
-  rpc Update (UpdateVaultRequest) returns (UpdateVaultResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/vaults/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/vaults/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular Vault.
-  rpc Delete (DeleteVaultRequest) returns (DeleteVaultResponse) {
-    option (google.api.http) = {
-            delete: "/vaults/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "Vault";
-  }
-
-  // Use this method to retrieve all the Vaults.
-  rpc List (ListVaultRequest) returns (ListVaultsResponse) {
-    option (google.api.http) = {
-            get: "/vaults"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// Application represents a particular AWS Region
-// ------------------------------------------------------
-message Application {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The Application identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the Application
-  string name = 2;
-
-  // The description of the Application
-  string description = 3;
-}
-
-message CreateApplicationRequest {
-  Application payload = 1;
-}
-
-message CreateApplicationResponse {
-  Application result = 1;
-}
-
-message ReadApplicationRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadApplicationResponse {
-  Application result = 1;
-}
-
-message UpdateApplicationRequest {
-  Application payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateApplicationResponse {
-  Application result = 1;
-}
-
-message DeleteApplicationRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteApplicationResponse {}
-
-message ListApplicationRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListApplicationsResponse {
-  repeated Application results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service Applications {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a Application information.
-  rpc Create (CreateApplicationRequest) returns (CreateApplicationResponse) {
-    option (google.api.http) = {
-            post: "/applications"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a Application information by identifier.
-  rpc Read (ReadApplicationRequest) returns (ReadApplicationResponse) {
-    option (google.api.http) = {
-            get: "/applications/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a Application information.
-  rpc Update (UpdateApplicationRequest) returns (UpdateApplicationResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/applications/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/applications/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular Application.
-  rpc Delete (DeleteApplicationRequest) returns (DeleteApplicationResponse) {
-    option (google.api.http) = {
-            delete: "/applications/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "Application";
-  }
-
-  // Use this method to retrieve all the Applications.
-  rpc List (ListApplicationRequest) returns (ListApplicationsResponse) {
-    option (google.api.http) = {
-            get: "/applications"
-        };
-  }
-}
-
-
-// ------------------------------------------------------
-// AwsService represents a particular AWS Region
-// ------------------------------------------------------
-message AwsService {
-  option (gorm.opts) = {
-      ormable: true,
-      multi_account: true
-  };
-
-  // The AwsService identifier.
-  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
-
-  // The name of the AwsService
-  string name = 2;
-
-  // The description of the AwsService
-  string description = 3;
-}
-
-message CreateAwsServiceRequest {
-  AwsService payload = 1;
-}
-
-message CreateAwsServiceResponse {
-  AwsService result = 1;
-}
-
-message ReadAwsServiceRequest {
-  atlas.rpc.Identifier id = 1;
-  infoblox.api.FieldSelection fields = 2;
-}
-
-message ReadAwsServiceResponse {
-  AwsService result = 1;
-}
-
-message UpdateAwsServiceRequest {
-  AwsService payload = 1;
-  google.protobuf.FieldMask fields = 2;
-}
-
-message UpdateAwsServiceResponse {
-  AwsService result = 1;
-}
-
-message DeleteAwsServiceRequest {
-  atlas.rpc.Identifier id = 1;
-}
-
-message DeleteAwsServiceResponse {}
-
-message ListAwsServiceRequest {
-  infoblox.api.Filtering filter = 1;
-  infoblox.api.Sorting order_by = 2;
-  infoblox.api.FieldSelection fields = 3;
-  infoblox.api.Pagination paging = 4;
-}
-
-message ListAwsServicesResponse {
-  repeated AwsService results = 1;
-  infoblox.api.PageInfo page = 2;
-}
-
-service AwsServices {
-  option (gorm.server) = {
-      autogen: true,
-      txn_middleware: true,
-    };
-
-  // Use this method to create a AwsService information.
-  rpc Create (CreateAwsServiceRequest) returns (CreateAwsServiceResponse) {
-    option (google.api.http) = {
-            post: "/aws_services"
-            body: "payload"
-        };
-  }
-
-  // Use this method to read a AwsService information by identifier.
-  rpc Read (ReadAwsServiceRequest) returns (ReadAwsServiceResponse) {
-    option (google.api.http) = {
-            get: "/aws_services/{id.resource_id}"
-        };
-  }
-
-  // Use this method to update a AwsService information.
-  rpc Update (UpdateAwsServiceRequest) returns (UpdateAwsServiceResponse) {
-    option (atlas_validate.method).allow_unknown_fields = false;
-    option (google.api.http) = {
-            put: "/aws_services/{payload.id.resource_id}"
-            body: "payload"
-            additional_bindings: {
-                patch: "/aws_services/{payload.id.resource_id}"
-                body: "payload"
-            }
-    };
-  }
-
-  // Use this method to delete a particular AwsService.
-  rpc Delete (DeleteAwsServiceRequest) returns (DeleteAwsServiceResponse) {
-    option (google.api.http) = {
-            delete: "/aws_services/{id.resource_id}"
-        };
-    option (gorm.method).object_type = "AwsService";
-  }
-
-  // Use this method to retrieve all the AwsServices.
-  rpc List (ListAwsServiceRequest) returns (ListAwsServicesResponse) {
-    option (google.api.http) = {
-            get: "/aws_services"
         };
   }
 }
@@ -1333,114 +763,114 @@ service KubeClusters {
 
 
 // ------------------------------------------------------
-// Region represents a particular AWS Region
+// Vault represents a particular AWS Region
 // ------------------------------------------------------
-message Region {
+message Vault {
   option (gorm.opts) = {
       ormable: true,
       multi_account: true
   };
 
-  // The Region identifier.
+  // The Vault identifier.
   atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
 
-  // The name of the Region
+  // The name of the Vault
   string name = 2;
 
-  // The description of the Region
+  // The description of the Vault
   string description = 3;
 }
 
-message CreateRegionRequest {
-  Region payload = 1;
+message CreateVaultRequest {
+  Vault payload = 1;
 }
 
-message CreateRegionResponse {
-  Region result = 1;
+message CreateVaultResponse {
+  Vault result = 1;
 }
 
-message ReadRegionRequest {
+message ReadVaultRequest {
   atlas.rpc.Identifier id = 1;
   infoblox.api.FieldSelection fields = 2;
 }
 
-message ReadRegionResponse {
-  Region result = 1;
+message ReadVaultResponse {
+  Vault result = 1;
 }
 
-message UpdateRegionRequest {
-  Region payload = 1;
+message UpdateVaultRequest {
+  Vault payload = 1;
   google.protobuf.FieldMask fields = 2;
 }
 
-message UpdateRegionResponse {
-  Region result = 1;
+message UpdateVaultResponse {
+  Vault result = 1;
 }
 
-message DeleteRegionRequest {
+message DeleteVaultRequest {
   atlas.rpc.Identifier id = 1;
 }
 
-message DeleteRegionResponse {}
+message DeleteVaultResponse {}
 
-message ListRegionRequest {
+message ListVaultRequest {
   infoblox.api.Filtering filter = 1;
   infoblox.api.Sorting order_by = 2;
   infoblox.api.FieldSelection fields = 3;
   infoblox.api.Pagination paging = 4;
 }
 
-message ListRegionsResponse {
-  repeated Region results = 1;
+message ListVaultsResponse {
+  repeated Vault results = 1;
   infoblox.api.PageInfo page = 2;
 }
 
-service Regions {
+service Vaults {
   option (gorm.server) = {
       autogen: true,
       txn_middleware: true,
     };
 
-  // Use this method to create a Region information.
-  rpc Create (CreateRegionRequest) returns (CreateRegionResponse) {
+  // Use this method to create a Vault information.
+  rpc Create (CreateVaultRequest) returns (CreateVaultResponse) {
     option (google.api.http) = {
-            post: "/regions"
+            post: "/vaults"
             body: "payload"
         };
   }
 
-  // Use this method to read a Region information by identifier.
-  rpc Read (ReadRegionRequest) returns (ReadRegionResponse) {
+  // Use this method to read a Vault information by identifier.
+  rpc Read (ReadVaultRequest) returns (ReadVaultResponse) {
     option (google.api.http) = {
-            get: "/regions/{id.resource_id}"
+            get: "/vaults/{id.resource_id}"
         };
   }
 
-  // Use this method to update a Region information.
-  rpc Update (UpdateRegionRequest) returns (UpdateRegionResponse) {
+  // Use this method to update a Vault information.
+  rpc Update (UpdateVaultRequest) returns (UpdateVaultResponse) {
     option (atlas_validate.method).allow_unknown_fields = false;
     option (google.api.http) = {
-            put: "/regions/{payload.id.resource_id}"
+            put: "/vaults/{payload.id.resource_id}"
             body: "payload"
             additional_bindings: {
-                patch: "/regions/{payload.id.resource_id}"
+                patch: "/vaults/{payload.id.resource_id}"
                 body: "payload"
             }
     };
   }
 
-  // Use this method to delete a particular Region.
-  rpc Delete (DeleteRegionRequest) returns (DeleteRegionResponse) {
+  // Use this method to delete a particular Vault.
+  rpc Delete (DeleteVaultRequest) returns (DeleteVaultResponse) {
     option (google.api.http) = {
-            delete: "/regions/{id.resource_id}"
+            delete: "/vaults/{id.resource_id}"
         };
-    option (gorm.method).object_type = "Region";
+    option (gorm.method).object_type = "Vault";
   }
 
-  // Use this method to retrieve all the Regions.
-  rpc List (ListRegionRequest) returns (ListRegionsResponse) {
+  // Use this method to retrieve all the Vaults.
+  rpc List (ListVaultRequest) returns (ListVaultsResponse) {
     option (google.api.http) = {
-            get: "/regions"
+            get: "/vaults"
         };
   }
 }
@@ -1555,6 +985,576 @@ service VersionTags {
   rpc List (ListVersionTagRequest) returns (ListVersionTagsResponse) {
     option (google.api.http) = {
             get: "/version_tags"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
+// Application represents a particular AWS Region
+// ------------------------------------------------------
+message Application {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The Application identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the Application
+  string name = 2;
+
+  // The description of the Application
+  string description = 3;
+}
+
+message CreateApplicationRequest {
+  Application payload = 1;
+}
+
+message CreateApplicationResponse {
+  Application result = 1;
+}
+
+message ReadApplicationRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadApplicationResponse {
+  Application result = 1;
+}
+
+message UpdateApplicationRequest {
+  Application payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateApplicationResponse {
+  Application result = 1;
+}
+
+message DeleteApplicationRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteApplicationResponse {}
+
+message ListApplicationRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListApplicationsResponse {
+  repeated Application results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service Applications {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a Application information.
+  rpc Create (CreateApplicationRequest) returns (CreateApplicationResponse) {
+    option (google.api.http) = {
+            post: "/applications"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a Application information by identifier.
+  rpc Read (ReadApplicationRequest) returns (ReadApplicationResponse) {
+    option (google.api.http) = {
+            get: "/applications/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a Application information.
+  rpc Update (UpdateApplicationRequest) returns (UpdateApplicationResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/applications/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/applications/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular Application.
+  rpc Delete (DeleteApplicationRequest) returns (DeleteApplicationResponse) {
+    option (google.api.http) = {
+            delete: "/applications/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "Application";
+  }
+
+  // Use this method to retrieve all the Applications.
+  rpc List (ListApplicationRequest) returns (ListApplicationsResponse) {
+    option (google.api.http) = {
+            get: "/applications"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
+// AwsService represents a particular AWS Region
+// ------------------------------------------------------
+message AwsService {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The AwsService identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the AwsService
+  string name = 2;
+
+  // The description of the AwsService
+  string description = 3;
+}
+
+message CreateAwsServiceRequest {
+  AwsService payload = 1;
+}
+
+message CreateAwsServiceResponse {
+  AwsService result = 1;
+}
+
+message ReadAwsServiceRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadAwsServiceResponse {
+  AwsService result = 1;
+}
+
+message UpdateAwsServiceRequest {
+  AwsService payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateAwsServiceResponse {
+  AwsService result = 1;
+}
+
+message DeleteAwsServiceRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteAwsServiceResponse {}
+
+message ListAwsServiceRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListAwsServicesResponse {
+  repeated AwsService results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service AwsServices {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a AwsService information.
+  rpc Create (CreateAwsServiceRequest) returns (CreateAwsServiceResponse) {
+    option (google.api.http) = {
+            post: "/aws_services"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a AwsService information by identifier.
+  rpc Read (ReadAwsServiceRequest) returns (ReadAwsServiceResponse) {
+    option (google.api.http) = {
+            get: "/aws_services/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a AwsService information.
+  rpc Update (UpdateAwsServiceRequest) returns (UpdateAwsServiceResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/aws_services/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/aws_services/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular AwsService.
+  rpc Delete (DeleteAwsServiceRequest) returns (DeleteAwsServiceResponse) {
+    option (google.api.http) = {
+            delete: "/aws_services/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "AwsService";
+  }
+
+  // Use this method to retrieve all the AwsServices.
+  rpc List (ListAwsServiceRequest) returns (ListAwsServicesResponse) {
+    option (google.api.http) = {
+            get: "/aws_services"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
+// Deployment represents a particular AWS Region
+// ------------------------------------------------------
+message Deployment {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The Deployment identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the Deployment
+  string name = 2;
+
+  // The description of the Deployment
+  string description = 3;
+}
+
+message CreateDeploymentRequest {
+  Deployment payload = 1;
+}
+
+message CreateDeploymentResponse {
+  Deployment result = 1;
+}
+
+message ReadDeploymentRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadDeploymentResponse {
+  Deployment result = 1;
+}
+
+message UpdateDeploymentRequest {
+  Deployment payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateDeploymentResponse {
+  Deployment result = 1;
+}
+
+message DeleteDeploymentRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteDeploymentResponse {}
+
+message ListDeploymentRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListDeploymentsResponse {
+  repeated Deployment results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service Deployments {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a Deployment information.
+  rpc Create (CreateDeploymentRequest) returns (CreateDeploymentResponse) {
+    option (google.api.http) = {
+            post: "/deployments"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a Deployment information by identifier.
+  rpc Read (ReadDeploymentRequest) returns (ReadDeploymentResponse) {
+    option (google.api.http) = {
+            get: "/deployments/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a Deployment information.
+  rpc Update (UpdateDeploymentRequest) returns (UpdateDeploymentResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/deployments/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/deployments/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular Deployment.
+  rpc Delete (DeleteDeploymentRequest) returns (DeleteDeploymentResponse) {
+    option (google.api.http) = {
+            delete: "/deployments/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "Deployment";
+  }
+
+  // Use this method to retrieve all the Deployments.
+  rpc List (ListDeploymentRequest) returns (ListDeploymentsResponse) {
+    option (google.api.http) = {
+            get: "/deployments"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
+// Region represents a particular AWS Region
+// ------------------------------------------------------
+message Region {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The Region identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the Region
+  string name = 2;
+
+  // The description of the Region
+  string description = 3;
+}
+
+message CreateRegionRequest {
+  Region payload = 1;
+}
+
+message CreateRegionResponse {
+  Region result = 1;
+}
+
+message ReadRegionRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadRegionResponse {
+  Region result = 1;
+}
+
+message UpdateRegionRequest {
+  Region payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateRegionResponse {
+  Region result = 1;
+}
+
+message DeleteRegionRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteRegionResponse {}
+
+message ListRegionRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListRegionsResponse {
+  repeated Region results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service Regions {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a Region information.
+  rpc Create (CreateRegionRequest) returns (CreateRegionResponse) {
+    option (google.api.http) = {
+            post: "/regions"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a Region information by identifier.
+  rpc Read (ReadRegionRequest) returns (ReadRegionResponse) {
+    option (google.api.http) = {
+            get: "/regions/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a Region information.
+  rpc Update (UpdateRegionRequest) returns (UpdateRegionResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/regions/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/regions/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular Region.
+  rpc Delete (DeleteRegionRequest) returns (DeleteRegionResponse) {
+    option (google.api.http) = {
+            delete: "/regions/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "Region";
+  }
+
+  // Use this method to retrieve all the Regions.
+  rpc List (ListRegionRequest) returns (ListRegionsResponse) {
+    option (google.api.http) = {
+            get: "/regions"
+        };
+  }
+}
+
+
+// ------------------------------------------------------
+// Secret represents a particular AWS Region
+// ------------------------------------------------------
+message Secret {
+  option (gorm.opts) = {
+      ormable: true,
+      multi_account: true
+  };
+
+  // The Secret identifier.
+  atlas.rpc.Identifier id = 1 [(gorm.field).tag = {type: "serial"  primary_key: true}];
+
+  // The name of the Secret
+  string name = 2;
+
+  // The description of the Secret
+  string description = 3;
+}
+
+message CreateSecretRequest {
+  Secret payload = 1;
+}
+
+message CreateSecretResponse {
+  Secret result = 1;
+}
+
+message ReadSecretRequest {
+  atlas.rpc.Identifier id = 1;
+  infoblox.api.FieldSelection fields = 2;
+}
+
+message ReadSecretResponse {
+  Secret result = 1;
+}
+
+message UpdateSecretRequest {
+  Secret payload = 1;
+  google.protobuf.FieldMask fields = 2;
+}
+
+message UpdateSecretResponse {
+  Secret result = 1;
+}
+
+message DeleteSecretRequest {
+  atlas.rpc.Identifier id = 1;
+}
+
+message DeleteSecretResponse {}
+
+message ListSecretRequest {
+  infoblox.api.Filtering filter = 1;
+  infoblox.api.Sorting order_by = 2;
+  infoblox.api.FieldSelection fields = 3;
+  infoblox.api.Pagination paging = 4;
+}
+
+message ListSecretsResponse {
+  repeated Secret results = 1;
+  infoblox.api.PageInfo page = 2;
+}
+
+service Secrets {
+  option (gorm.server) = {
+      autogen: true,
+      txn_middleware: true,
+    };
+
+  // Use this method to create a Secret information.
+  rpc Create (CreateSecretRequest) returns (CreateSecretResponse) {
+    option (google.api.http) = {
+            post: "/secrets"
+            body: "payload"
+        };
+  }
+
+  // Use this method to read a Secret information by identifier.
+  rpc Read (ReadSecretRequest) returns (ReadSecretResponse) {
+    option (google.api.http) = {
+            get: "/secrets/{id.resource_id}"
+        };
+  }
+
+  // Use this method to update a Secret information.
+  rpc Update (UpdateSecretRequest) returns (UpdateSecretResponse) {
+    option (atlas_validate.method).allow_unknown_fields = false;
+    option (google.api.http) = {
+            put: "/secrets/{payload.id.resource_id}"
+            body: "payload"
+            additional_bindings: {
+                patch: "/secrets/{payload.id.resource_id}"
+                body: "payload"
+            }
+    };
+  }
+
+  // Use this method to delete a particular Secret.
+  rpc Delete (DeleteSecretRequest) returns (DeleteSecretResponse) {
+    option (google.api.http) = {
+            delete: "/secrets/{id.resource_id}"
+        };
+    option (gorm.method).object_type = "Secret";
+  }
+
+  // Use this method to retrieve all the Secrets.
+  rpc List (ListSecretRequest) returns (ListSecretsResponse) {
+    option (google.api.http) = {
+            get: "/secrets"
         };
   }
 }

@@ -5,7 +5,7 @@ import (
 	"os"
 	"log"
 	
-	"github.com/seizadi/atlas-template/cmd/template-cli/commands"
+	"github.com/seizadi/atlas-template/cmd/atlas-template/commands"
 	"github.com/codegangsta/cli"
 )
 
