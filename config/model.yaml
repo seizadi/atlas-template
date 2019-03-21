@@ -13,3 +13,4 @@ resources:
   Secret:
   Vault:
   VersionTag:
+  CloudProvider:
