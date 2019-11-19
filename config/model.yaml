@@ -1,16 +1,13 @@
 # Eventually you could have attributes for the model resources
 resources:
-  Application:
-  Artifact:
-  AwsRdsInstance:
-  AwsService:
-  Container:
-  Deployment:
-  Environment:
-  KubeCluster:
-  Manifest:
-  Region:
-  Secret:
-  Vault:
-  VersionTag:
   CloudProvider:
+  Region:
+  Ami:
+  Vpc:
+  Ec2:
+  Registery:
+  Application:
+  Container:
+  Scan:
+  KnowledgeBase:
+  Vulnerability:

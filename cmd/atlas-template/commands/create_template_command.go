@@ -61,10 +61,10 @@ func createTemplate(c *cli.Context) {
 	
 	err := runTemplate(r,
 		"template/pkg/pb/template.proto.template",
-		"resolved/pkg/pb/cmdb.proto" )
+		"resolved/pkg/pb/secops.proto" )
 	
 	if err != nil {
-		log.Fatalf("failed to create pkg/pb/cmdb.proto\n%s\n", err)
+		log.Fatalf("failed to create pkg/pb/secops.proto\n%s\n", err)
 	}
 	
 	err = runTemplate(r,

@@ -1,5 +1,5 @@
 
-CREATE TABLE {{(index . 0).NameSnakes}} (
+CREATE TABLE knowledge_bases (
   id serial primary key,
   account_id text,
   created_at timestamptz DEFAULT current_timestamp,
@@ -8,8 +8,8 @@ CREATE TABLE {{(index . 0).NameSnakes}} (
   description text DEFAULT NULL
 );
 
-CREATE TRIGGER {{(index . 0).NameSnakes}}_updated_at
-  BEFORE UPDATE OR INSERT ON {{(index . 0).NameSnakes}}
+CREATE TRIGGER knowledge_bases_updated_at
+  BEFORE UPDATE OR INSERT ON knowledge_bases
   FOR EACH ROW
   EXECUTE PROCEDURE set_updated_at();
 

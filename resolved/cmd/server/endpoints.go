@@ -4,25 +4,22 @@ import (
 	"github.com/infobloxopen/atlas-app-toolkit/gateway"
 	"github.com/spf13/viper"
 	
-	"github.com/seizadi/cmdb/pkg/pb"
+	"github.com/seizadi/secops/pkg/pb"
 )
 
 func RegisterGatewayEndpoints() gateway.Option {
 	return gateway.WithEndpointRegistration(viper.GetString("server.version"),
-		pb.RegisterCmdbHandlerFromEndpoint,
-		pb.RegisterApplicationsHandlerFromEndpoint,
-		pb.RegisterAwsServicesHandlerFromEndpoint,
+		pb.RegisterSecopsHandlerFromEndpoint,
 		pb.RegisterRegionsHandlerFromEndpoint,
-		pb.RegisterVaultsHandlerFromEndpoint,
-		pb.RegisterArtifactsHandlerFromEndpoint,
-		pb.RegisterSecretsHandlerFromEndpoint,
-		pb.RegisterAwsRdsInstancesHandlerFromEndpoint,
-		pb.RegisterDeploymentsHandlerFromEndpoint,
-		pb.RegisterKubeClustersHandlerFromEndpoint,
-		pb.RegisterManifestsHandlerFromEndpoint,
-		pb.RegisterVersionTagsHandlerFromEndpoint,
-		pb.RegisterContainersHandlerFromEndpoint,
-		pb.RegisterEnvironmentsHandlerFromEndpoint,
+		pb.RegisterEc2sHandlerFromEndpoint,
+		pb.RegisterApplicationsHandlerFromEndpoint,
+		pb.RegisterScansHandlerFromEndpoint,
+		pb.RegisterKnowledgeBasesHandlerFromEndpoint,
+		pb.RegisterVulnerabilitysHandlerFromEndpoint,
 		pb.RegisterCloudProvidersHandlerFromEndpoint,
+		pb.RegisterAmisHandlerFromEndpoint,
+		pb.RegisterVpcsHandlerFromEndpoint,
+		pb.RegisterRegisterysHandlerFromEndpoint,
+		pb.RegisterContainersHandlerFromEndpoint,
 	)
 }

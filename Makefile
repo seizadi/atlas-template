@@ -1,4 +1,4 @@
-PROJECT_ROOT    := github.com/seizadi/cmdb
+PROJECT_ROOT    := github.com/seizadi/atlas-template
 BUILD_PATH      := bin
 DOCKERFILE_PATH := $(CURDIR)/docker
 
@@ -11,7 +11,7 @@ IMAGE_REGISTRY ?= soheileizadi
 # configuration for server binary and image
 SERVER_BINARY     := $(BUILD_PATH)/server
 SERVER_PATH       := $(PROJECT_ROOT)/cmd/server
-SERVER_IMAGE      := $(IMAGE_REGISTRY)/cmdb-server
+SERVER_IMAGE      := $(IMAGE_REGISTRY)/atlas-template
 SERVER_DOCKERFILE := $(DOCKERFILE_PATH)/Dockerfile
 # Placeholder. modify as defined conventions.
 DB_VERSION        := 3

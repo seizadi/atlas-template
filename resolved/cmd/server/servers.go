@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/jinzhu/gorm"
-	"github.com/seizadi/cmdb/pkg/pb"
-	"github.com/seizadi/cmdb/pkg/svc"
+	"github.com/seizadi/secops/pkg/pb"
+	"github.com/seizadi/secops/pkg/svc"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
@@ -18,19 +18,7 @@ func CreateServer(logger *logrus.Logger, db *gorm.DB, interceptors []grpc.UnaryS
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterCmdbServer(grpcServer, s)
-
-	application, err := svc.NewApplicationsServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterApplicationsServer(grpcServer, application)
-
-	aws_service, err := svc.NewAwsServicesServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterAwsServicesServer(grpcServer, aws_service)
+	pb.RegisterSecopsServer(grpcServer, s)
 
 	region, err := svc.NewRegionsServer()
 	if err != nil {
@@ -38,71 +26,65 @@ func CreateServer(logger *logrus.Logger, db *gorm.DB, interceptors []grpc.UnaryS
 	}
 	pb.RegisterRegionsServer(grpcServer, region)
 
-	vault, err := svc.NewVaultsServer()
+	ec_2, err := svc.NewEc2sServer()
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterVaultsServer(grpcServer, vault)
+	pb.RegisterEc2sServer(grpcServer, ec_2)
 
-	artifact, err := svc.NewArtifactsServer()
+	application, err := svc.NewApplicationsServer()
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterArtifactsServer(grpcServer, artifact)
+	pb.RegisterApplicationsServer(grpcServer, application)
 
-	secret, err := svc.NewSecretsServer()
+	scan, err := svc.NewScansServer()
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterSecretsServer(grpcServer, secret)
+	pb.RegisterScansServer(grpcServer, scan)
 
-	aws_rds_instance, err := svc.NewAwsRdsInstancesServer()
+	knowledge_base, err := svc.NewKnowledgeBasesServer()
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterAwsRdsInstancesServer(grpcServer, aws_rds_instance)
+	pb.RegisterKnowledgeBasesServer(grpcServer, knowledge_base)
 
-	deployment, err := svc.NewDeploymentsServer()
+	vulnerability, err := svc.NewVulnerabilitysServer()
 	if err != nil {
 		return nil, err
 	}
-	pb.RegisterDeploymentsServer(grpcServer, deployment)
-
-	kube_cluster, err := svc.NewKubeClustersServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterKubeClustersServer(grpcServer, kube_cluster)
-
-	manifest, err := svc.NewManifestsServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterManifestsServer(grpcServer, manifest)
-
-	version_tag, err := svc.NewVersionTagsServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterVersionTagsServer(grpcServer, version_tag)
-
-	container, err := svc.NewContainersServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterContainersServer(grpcServer, container)
-
-	environment, err := svc.NewEnvironmentsServer()
-	if err != nil {
-		return nil, err
-	}
-	pb.RegisterEnvironmentsServer(grpcServer, environment)
+	pb.RegisterVulnerabilitysServer(grpcServer, vulnerability)
 
 	cloud_provider, err := svc.NewCloudProvidersServer()
 	if err != nil {
 		return nil, err
 	}
 	pb.RegisterCloudProvidersServer(grpcServer, cloud_provider)
+
+	ami, err := svc.NewAmisServer()
+	if err != nil {
+		return nil, err
+	}
+	pb.RegisterAmisServer(grpcServer, ami)
+
+	vpc, err := svc.NewVpcsServer()
+	if err != nil {
+		return nil, err
+	}
+	pb.RegisterVpcsServer(grpcServer, vpc)
+
+	registery, err := svc.NewRegisterysServer()
+	if err != nil {
+		return nil, err
+	}
+	pb.RegisterRegisterysServer(grpcServer, registery)
+
+	container, err := svc.NewContainersServer()
+	if err != nil {
+		return nil, err
+	}
+	pb.RegisterContainersServer(grpcServer, container)
 
 	return grpcServer, nil
 }

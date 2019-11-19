@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package api.cmdb;
+package api.secops;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
@@ -14,9 +14,9 @@ import "github.com/infobloxopen/atlas-app-toolkit/rpc/resource/resource.proto";
 import "github.com/infobloxopen/protoc-gen-atlas-query-validate/options/query_validate.proto";
 import "github.com/infobloxopen/protoc-gen-atlas-validate/options/atlas_validate.proto";
 
-option go_package = "github.com/seizadi/cmdb/pkg/pb;pb";
+option go_package = "github.com/seizadi/secops/pkg/pb;pb";
 
-// The Cmdb service, GetVersion RPC, and Version message
+// The SecOps service, GetVersion RPC, and Version message
 // make up a simple "starter" example. It allows the Atlas CLI to generate an
 // end-to-end example for the sake of demonstration. Feel free to change
 // GetVersion to better-suit how your versioning system, or get rid of it entirely.
@@ -29,11 +29,11 @@ option go_package = "github.com/seizadi/cmdb/pkg/pb;pb";
 
 option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
   info: {
-    title: "CMDB";
+    title: "SECOPS";
     version: "1.0";
     contact: {
         name: "Soheil Eizadi";
-        url: "https://github.com/seizadi/cmdb";
+        url: "https://github.com/seizadi/secops";
         email: "seizadi@gmail.com";
     };
   };
@@ -62,13 +62,13 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 
 
 // ---------------------------------
-// CMDB Application Version
+// SECOPS Application Version
 // ---------------------------------
 message VersionResponse {
   string version = 1;
 }
 
-service Cmdb {
+service Secops {
   rpc GetVersion (google.protobuf.Empty) returns (VersionResponse) {
   // TODO: Provide mappings between REST endpoints and service methods.
     option (google.api.http) = {

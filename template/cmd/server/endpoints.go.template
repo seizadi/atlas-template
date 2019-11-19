@@ -4,12 +4,12 @@ import (
 	"github.com/infobloxopen/atlas-app-toolkit/gateway"
 	"github.com/spf13/viper"
 	
-	"github.com/seizadi/cmdb/pkg/pb"
+	"github.com/seizadi/secops/pkg/pb"
 )
 
 func RegisterGatewayEndpoints() gateway.Option {
 	return gateway.WithEndpointRegistration(viper.GetString("server.version"),
-		pb.RegisterCmdbHandlerFromEndpoint,
+		pb.RegisterSecopsHandlerFromEndpoint,
 {{- range $r := . }}
 		pb.Register{{$r.NameCamels}}HandlerFromEndpoint,
 {{- end }}
